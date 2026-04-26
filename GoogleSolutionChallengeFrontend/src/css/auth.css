@@ -19,11 +19,18 @@
   font-size: 14px;
 }
 
-/* Strip index.css global margins */
-.auth-root h1, .auth-root h2, .auth-root p {
+/* Strip index.css global margins AND font sizes */
+.auth-root h1, .auth-root h2, .auth-root h3,
+.auth-root p, .auth-root label, .auth-root span, .auth-root button, .auth-root input {
   margin: 0;
   line-height: normal;
 }
+
+/* Prevent the 56px global h1 / 24px global h2 from leaking in */
+.auth-root h1 { font-size: 24px; font-weight: 700; }
+.auth-root h2 { font-size: 16px; font-weight: 600; }
+.auth-root h3 { font-size: 14px; font-weight: 600; }
+.auth-root p  { font-size: 13px; }
 
 /* ============================================================
    LEFT PANEL — illustration

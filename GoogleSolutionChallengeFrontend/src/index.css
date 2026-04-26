@@ -64,7 +64,7 @@
 }
 
 /* Auth, Profile, Dashboard & Task Detail pages need full viewport — remove width/border constraints */
-#root:has(.auth-root), #root:has(.profile-root), #root:has(.dashboard-root), #root:has(.td-page), #root:has(.prof-page) {
+#root:has(.auth-root), #root:has(.profile-root), #root:has(.dashboard-root), #root:has(.td-page), #root:has(.prof-page), #root:has(.tk-root) {
   width: 100%;
   max-width: 100%;
   margin: 0;
@@ -77,14 +77,19 @@ body {
   margin: 0;
 }
 
-h1,
-h2 {
+/* Only apply large heading sizes OUTSIDE auth/dashboard contexts */
+:not(.auth-root) :not(.dashboard-root) :not(.prof-page) :not(.tk-root) h1:not(.auth-root h1):not(.prof-page h1) {
+  font-size: 56px;
+}
+
+h1, h2 {
   font-family: var(--heading);
   font-weight: 500;
   color: var(--text-h);
 }
 
-h1 {
+/* Scoped large heading only for top-level content area, not auth or dashboard pages */
+#root > h1 {
   font-size: 56px;
   letter-spacing: -1.68px;
   margin: 32px 0;
@@ -93,7 +98,7 @@ h1 {
     margin: 20px 0;
   }
 }
-h2 {
+#root > h2 {
   font-size: 24px;
   line-height: 118%;
   letter-spacing: -0.24px;

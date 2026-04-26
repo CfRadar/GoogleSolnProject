@@ -211,7 +211,7 @@ export default function TasksPage() {
             <span className="ds-nav-item-text">My Tasks</span>
           </a>
           <a href="#report" className="ds-nav-item" onClick={(e) => { e.preventDefault(); navigate("report"); }}>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 11l18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 11l18-5v12L3 14v-3z" /><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6" /></svg>
             <span className="ds-nav-item-text">Report Crisis</span>
           </a>
           <a href="#" className="ds-nav-item" onClick={(e) => { e.preventDefault(); setIsNotifOpen(true); }}>

@@ -138,8 +138,8 @@ export default function ProfileSetupPage() {
       </aside>
 
       {/* ── RIGHT PANEL ────────────────────────────────────────── */}
-      <main className="auth-right">
-        <div className="auth-form-container" style={{ maxWidth: '440px' }}>
+      <main className="auth-right" style={{ alignItems: 'flex-start', overflowY: 'auto', paddingTop: '48px' }}>
+        <div className="auth-form-container" style={{ maxWidth: '460px', gap: '20px' }}>
 
           {/* Step 1 Form */}
           {step === 1 && (

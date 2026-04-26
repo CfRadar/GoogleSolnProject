@@ -202,7 +202,7 @@ export default function DashboardPage() {
             </div>
 
             <div className="ds-avatar" onClick={handleLogout} title="Click to Logout">
-              {avatarLetter}
+              !
             </div>
           </div>
         </header>
