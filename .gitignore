@@ -1,0 +1,63 @@
+# Root-level .gitignore for the SmartAid monorepo
+
+# ── Node modules (both sub-projects) ──────────────────────────────────────────
+node_modules/
+**/node_modules/
+
+# ── Environment variables (NEVER commit secrets) ──────────────────────────────
+.env
+.env.local
+.env.*.local
+**/.env
+**/.env.local
+
+# ── Build outputs ─────────────────────────────────────────────────────────────
+dist/
+build/
+**/dist/
+**/build/
+
+# ── Vite cache ────────────────────────────────────────────────────────────────
+.vite/
+**/.vite/
+
+# ── TypeScript compilation cache ──────────────────────────────────────────────
+*.tsbuildinfo
+**/*.tsbuildinfo
+
+# ── Logs ─────────────────────────────────────────────────────────────────────
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ── OS-generated files ────────────────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# ── IDE / Editor configs ──────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.swp
+
+# ── Python virtual environment (from .venv in backend) ───────────────────────
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# ── Miscellaneous ─────────────────────────────────────────────────────────────
+.agents/
+coverage/
+*.local
