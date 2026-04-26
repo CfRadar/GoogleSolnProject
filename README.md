@@ -146,6 +146,7 @@ SerpAPI Search Results
 ### 2. Google Apps Script — OTP Email Delivery
 - **Used in:** `services/authService.js`
 - **Purpose:** Sends a 6-digit OTP code to the user's email address via a serverless Google Apps Script webhook. This avoids needing SendGrid/Twilio in the prototype phase.
+- **Development-only shortcut:** When the backend runs with `NODE_ENV=development`, OTP `198920` can be used to verify accounts locally. Production still uses the normal OTP flow.
 - **Key function:**
   ```js
   // authService.js

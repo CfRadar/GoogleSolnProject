@@ -104,6 +104,7 @@ All routes assume the base path: `/api`
 
 **`POST /api/auth/verify-otp`**
 - **Description**: Validates OTP, marks the user as verified, and returns a JWT. **Does not accept profile fields** — profile setup is a separate step.
+- **Development-only shortcut**: When `NODE_ENV=development`, entering OTP `198920` bypasses the stored OTP check for local testing. This does not work in production.
 - **Request Body**: 
   ```json
   { 
