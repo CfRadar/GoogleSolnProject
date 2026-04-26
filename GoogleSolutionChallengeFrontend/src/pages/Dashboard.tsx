@@ -43,7 +43,6 @@ export default function DashboardPage() {
   const [profile, setProfile] = useState<ProfileData | null>(null);
   const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
   const [isNotifOpen, setIsNotifOpen] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [modalMode, setModalMode] = useState<"urgent" | "recommended" | null>(null);
 
@@ -335,7 +334,7 @@ export default function DashboardPage() {
               </button>
             </div>
             <div className="ds-modal-content">
-              {modalTasks.length > 0 ? modalTasks.map((task, i) => (
+              {modalTasks.length > 0 ? modalTasks.map((task) => (
                 <div key={task._id} className="ds-task-card" style={{ minWidth: '100%', width: '100%' }}>
                   <div className="ds-card-tags">
                     <span className={`ds-tag ${getCategoryColor(task.category)}`}>

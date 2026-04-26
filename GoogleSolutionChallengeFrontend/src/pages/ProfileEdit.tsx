@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { navigate } from "../navigation";
 import { updateProfile, fetchProfile, logout } from "../api/auth";
-import type { ProfileData } from "../api/auth";
 import { getToken, getUser } from "../api/api";
 import "../css/taskdetail.css"; // Reuse existing layout wrappers
 

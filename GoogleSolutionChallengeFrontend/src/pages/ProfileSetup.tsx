@@ -4,7 +4,6 @@
  * UI: Split two-column layout matching Login/Signup to fix vertical scroll issues.
  */
 import { useState, useEffect } from "react";
-import type { FormEvent } from "react";
 import { setupProfile } from "../api/auth";
 import { getToken, setUser } from "../api/api";
 import { navigate } from "../navigation";
