@@ -86,7 +86,6 @@ export default function DashboardPage() {
   // Derive Display Names
   const displayName = profile?.email ? profile.email.split('@')[0].replace(/[^a-zA-Z]/g, '') : "User";
   const capitalName = displayName.charAt(0).toUpperCase() + displayName.slice(1);
-  const avatarLetter = capitalName.charAt(0) || "U";
 
   // Compute Full Lists Arrays Natively (avoids backend limit caps allowing unrestricted 'View All' UX)
   const fullUrgentTasks = useMemo(() => {
