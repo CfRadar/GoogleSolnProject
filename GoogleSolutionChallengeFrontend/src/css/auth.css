@@ -10,6 +10,10 @@
   font-family: "Inter", system-ui, sans-serif;
 }
 
+.devotp {
+  color: green;
+}
+
 .auth-root {
   min-height: 100svh;
   display: flex;

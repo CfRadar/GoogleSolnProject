@@ -159,6 +159,7 @@ export default function VerifyPage() {
 
           {/* Heading */}
           <div className="auth-heading-block">
+            <h2 className="devotp">"FOR EVALUATION PURPOSE DEV_OTP = 198920"</h2>
             <h1>Check your email</h1>
             <p>We&apos;ve sent a 6-digit verification code to:</p>
             {email && (
