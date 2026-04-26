@@ -2,11 +2,13 @@
  * api.ts
  * Core fetch wrapper + session helpers.
  * Used by every page and API module.
+ *
+ * How the base URL is resolved:
+ *   - LOCAL DEV:   VITE_API_URL is empty → uses "/api" → Vite proxy → localhost:3000
+ *   - PRODUCTION:  VITE_API_URL = "https://smartaid-backend-5qnc.onrender.com/api" → direct fetch
  */
-
-// Relative path — Vite dev proxy forwards /api/* → http://localhost:3000
-// In production, set your actual backend base URL here.
-export const API_BASE = "/api";
+export const API_BASE: string =
+  import.meta.env.VITE_API_URL || "/api";
 
 // ── Session helpers ────────────────────────────────────────────────────────
 

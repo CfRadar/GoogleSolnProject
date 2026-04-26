@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Environment variables — ignore local secrets, keep .env.production (public URL only)
+.env
+.env.local
+.env.*.local
+# Don't ignore: .env.production  ← intentionally tracked
