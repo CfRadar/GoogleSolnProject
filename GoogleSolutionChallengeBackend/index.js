@@ -11,9 +11,6 @@ if (!process.env.MONGODB_URI) {
 if (!process.env.SERP_API_KEY) {
   console.warn("Missing SERP_API_KEY in .env");
 }
-if (!process.env.URL) {
-  console.warn("Missing URL in .env");
-}
 
 const compression = require("compression");
 const cors = require("cors");

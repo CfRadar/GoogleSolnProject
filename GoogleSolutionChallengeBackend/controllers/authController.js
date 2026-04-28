@@ -11,17 +11,6 @@ exports.signup = async (req, res) => {
   }
 };
 
-exports.verifyOtp = async (req, res) => {
-  try {
-    const { email, otp } = req.body;
-    if (!email || !otp) return res.status(400).json({ error: "Email and OTP required" });
-    const result = await authService.verifyOtp(email, otp);
-    res.json(result);
-  } catch (err) {
-    res.status(400).json({ error: err.message });
-  }
-};
-
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -29,10 +18,6 @@ exports.login = async (req, res) => {
     const result = await authService.login(email, password);
     res.json(result);
   } catch (err) {
-    const errorResponse = { error: err.message };
-    if (err.needsVerification) {
-      errorResponse.needsVerification = true;
-    }
-    res.status(401).json(errorResponse);
+    res.status(401).json({ error: err.message });
   }
 };

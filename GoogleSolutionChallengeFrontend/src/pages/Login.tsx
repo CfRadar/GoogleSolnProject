@@ -1,6 +1,6 @@
 /**
  * Login.tsx
- * POST /api/auth/login → stores token → routes based on profileCompleted
+ * POST /api/auth/login → stores token → routes based on isProfileComplete
  * UI: pixel-perfect Smart Aid design (two-column auth layout)
  */
 import { useState } from "react";
@@ -21,7 +21,7 @@ export default function LoginPage() {
     setLoading(true);
     try {
       const data = await login(email, password);
-      redirectAfterAuth(data.user.profileCompleted);
+      redirectAfterAuth(data.user.isProfileComplete);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Login failed");
     } finally {

@@ -1,12 +1,12 @@
 /**
  * Signup.tsx
- * POST /api/auth/signup → stores pendingEmail → routes to #verify
+ * POST /api/auth/signup → stores token → routes to #profile-setup
  * UI: pixel-perfect Smart Aid design (two-column auth layout)
  */
 import { useState } from "react";
 import type { FormEvent } from "react";
 import { signup } from "../api/auth";
-import { navigate } from "../navigation";
+import { redirectAfterAuth, navigate } from "../navigation";
 import "../css/auth.css";
 
 export default function SignupPage() {
@@ -27,9 +27,8 @@ export default function SignupPage() {
 
     setLoading(true);
     try {
-      await signup(email, password);
-      sessionStorage.setItem("pendingEmail", email);
-      navigate("verify");
+      const data = await signup(email, password);
+      redirectAfterAuth(data.user.isProfileComplete);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Signup failed");
     } finally {

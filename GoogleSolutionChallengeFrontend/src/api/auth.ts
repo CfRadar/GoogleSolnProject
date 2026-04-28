@@ -4,7 +4,6 @@
  *
  * Endpoints (read-only from backend):
  *   POST /api/auth/signup
- *   POST /api/auth/verify-otp
  *   POST /api/auth/login
  *   GET  /api/profile
  *   POST /api/profile/setup
@@ -21,19 +20,20 @@ import type { StoredUser } from "./api";
 // ── Response shapes (matching backend exactly) ─────────────────────────────
 
 export interface SignupResponse {
-  message: string; // "OTP sent"
+  token: string;
+  user: StoredUser;
 }
 
 export interface AuthResponse {
   token: string;
-  user: StoredUser; // { email, isVerified?, profileCompleted }
+  user: StoredUser; // { email, isProfileComplete }
 }
 
 export interface ProfileData {
   _id: string;
   email: string;
-  isVerified: boolean;
-  profileCompleted: boolean;
+  isProfileComplete: boolean;
+  profileCompleted?: boolean;
   skills: string[];
   interests: string[];
   availability?: string;
@@ -51,31 +51,15 @@ export interface ProfileData {
 /**
  * POST /api/auth/signup
  * Body: { email, password }
- * Returns: { message: "OTP sent" }
+ * Returns: { token, user }
  */
 export async function signup(
   email: string,
   password: string
 ): Promise<SignupResponse> {
-  return apiFetch<SignupResponse>("/auth/signup", {
+  const data = await apiFetch<SignupResponse>("/auth/signup", {
     method: "POST",
     body: JSON.stringify({ email, password }),
-  });
-}
-
-/**
- * POST /api/auth/verify-otp
- * Body: { email, otp }
- * Returns: { token, user: { email, isVerified, profileCompleted } }
- * → Stores token + user in localStorage
- */
-export async function verifyOTP(
-  email: string,
-  otp: string
-): Promise<AuthResponse> {
-  const data = await apiFetch<AuthResponse>("/auth/verify-otp", {
-    method: "POST",
-    body: JSON.stringify({ email, otp }),
   });
 
   setToken(data.token);
@@ -87,7 +71,7 @@ export async function verifyOTP(
 /**
  * POST /api/auth/login
  * Body: { email, password }
- * Returns: { token, user: { email, profileCompleted } }
+ * Returns: { token, user: { email, isProfileComplete } }
  * → Stores token + user in localStorage
  */
 export async function login(
@@ -118,7 +102,7 @@ export async function fetchProfile(): Promise<ProfileData> {
  * POST /api/profile/setup
  * Requires: Authorization: Bearer <token>
  * Body: { skills, interests, availability, location: { address } }
- * Sets profileCompleted = true on backend.
+ * Sets isProfileComplete = true on backend.
  */
 export async function setupProfile(payload: {
   skills: string[];
@@ -136,7 +120,7 @@ export async function setupProfile(payload: {
  * PUT /api/profile
  * Requires: Authorization: Bearer <token>
  * Body: { skills, interests, availability, location: { address } }
- * General profile update (does NOT reset profileCompleted).
+ * General profile update (does NOT reset profile completion).
  */
 export async function updateProfile(payload: {
   skills?: string[];

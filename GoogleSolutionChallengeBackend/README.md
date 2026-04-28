@@ -9,7 +9,7 @@
 - **Intelligent Deduplication**: Smart matching heuristics to merge similar scraped and submitted reports.
 
 - **Dashboard Analytics**: Top-level statistic tracking for data aggregation.
-- **OTP Authentication**: Secure, spreadsheet-backed (Google Apps Script) passwordless OTP verification flows.
+- **JWT Authentication**: Email/password signup and login with immediate token issuance.
 - **Recommendations & Leaderboard**: Automated tagging and matching engine that pairs users with the best opportunities and ranks power-users based on engagement.
 
 ---
@@ -26,7 +26,7 @@
 - **Bcrypt**: Robust cryptographic password hashing.
 - **node-cron**: Scheduled expiration and data curation chron jobs.
 - **SerpAPI**: Lightweight Google Search integration.
-- **Google Apps Script**: External, low-friction microservice for triggering OTP interactions.
+
 
 ---
 
@@ -66,7 +66,6 @@ PORT=3000
 MONGODB_URI=your_mongodb_uri
 JWT_SECRET=your_secret
 SERP_API_KEY=your_key
-URL=your_google_script_url
 ```
 
 ### 4. Start the Server
@@ -87,7 +86,7 @@ All routes assume the base path: `/api`
 ### 🛡 Authentication
 
 **`POST /api/auth/signup`**
-- **Description**: Creates a localized shadow-user and broadcasts a secure OTP event.
+- **Description**: Creates the user immediately, hashes the password, and returns a JWT.
 - **Request Body**:
   ```json
   { 
@@ -98,34 +97,17 @@ All routes assume the base path: `/api`
 - **Sample Response**:
   ```json
   {
-    "message": "OTP sent"
-  }
-  ```
-
-**`POST /api/auth/verify-otp`**
-- **Description**: Validates OTP, marks the user as verified, and returns a JWT. **Does not accept profile fields** — profile setup is a separate step.
-- **Development-only shortcut**: When `NODE_ENV=development`, entering OTP `198920` bypasses the stored OTP check for local testing. This does not work in production.
-- **Request Body**: 
-  ```json
-  { 
-    "email": "user@example.com", 
-    "otp": "123456"
-  }
-  ```
-- **Sample Response**:
-  ```json
-  {
     "token": "eyJhbGciOiJIUzI1NiIsIn...",
     "user": {
       "email": "user@example.com",
-      "isVerified": true,
+      "isProfileComplete": false,
       "profileCompleted": false
     }
   }
   ```
 
 **`POST /api/auth/login`**
-- **Description**: Standard authentication for returning verified users.
+- **Description**: Standard email/password authentication.
 - **Request Body**: 
   ```json
   { 
@@ -139,6 +121,7 @@ All routes assume the base path: `/api`
     "token": "eyJhbGciOiJIUzI1NiIsIn...",
     "user": {
       "email": "user@example.com",
+      "isProfileComplete": true,
       "profileCompleted": true
     }
   }
@@ -147,7 +130,7 @@ All routes assume the base path: `/api`
 ### 👤 Profile
 
 **`POST /api/profile/setup`** ⭐ New
-- **Description**: First-time profile onboarding after OTP verification. Sets `profileCompleted = true`. Requires JWT.
+- **Description**: First-time profile onboarding after signup. Sets `isProfileComplete = true`. Requires JWT.
 - **Headers**: `Authorization: Bearer <your_jwt_token>`
 - **Request Body**:
   ```json
@@ -163,7 +146,7 @@ All routes assume the base path: `/api`
   {
     "_id": "60d5ecb8b392...",
     "email": "user@example.com",
-    "isVerified": true,
+    "isProfileComplete": true,
     "profileCompleted": true,
     "skills": ["first aid", "logistics"],
     "interests": ["medical", "disaster"],
@@ -398,14 +381,13 @@ Our data pipeline operates on two distinct streams converging into a unified `Op
 The system uses a clean two-phase onboarding strategy:
 
 **New User Flow:**
-1. `POST /api/auth/signup` — User provides email/password. System broadcasts a secure **OTP**.
-2. `POST /api/auth/verify-otp` — User supplies OTP. System sets `isVerified = true` and returns a **JWT** with `profileCompleted: false`.
-3. `POST /api/profile/setup` *(if `profileCompleted === false`)* — Frontend calls this protected endpoint with user demographics. System sets `profileCompleted = true`.
-4. User is now fully onboarded and can access all app features.
+1. `POST /api/auth/signup` — User provides email/password. System creates the account immediately and returns a **JWT**.
+2. `POST /api/profile/setup` *(if `isProfileComplete === false`)* — Frontend calls this protected endpoint with user demographics. System sets `isProfileComplete = true`.
+3. User is now fully onboarded and can access all app features.
 
 **Returning User Flow:**
-5. `POST /api/auth/login` — Standard email/password. Returns JWT with current `profileCompleted` status.
-6. If `profileCompleted === false`, redirect to profile setup before granting access to protected features.
+4. `POST /api/auth/login` — Standard email/password. Returns JWT with current `isProfileComplete` status.
+5. If `isProfileComplete === false`, redirect to profile setup before granting access to protected features.
 
 ---
 
@@ -453,5 +435,5 @@ Don't want to spin up Postman? We included `test.html` strictly for frontend tes
 We have isolated four core paths for immediate V2 scaling:
 - **ML Category Classification:** Upgrading the static text-parser heuristic to a tuned native Machine Learning classification pipeline.
 - **Native Geolocation Boundaries:** Upgrading Mongoose Points to rigorous PostGIS intersections.
-- **Third Party Integrations:** Phasing out the Google Apps script in favor of direct robust communication buses like SendGrid/Twilio.
+- **Third Party Integrations:** Expanding direct integrations for email and notifications where needed.
 - **WebSocket Feeds:** Streaming active opportunities instantly without polling.

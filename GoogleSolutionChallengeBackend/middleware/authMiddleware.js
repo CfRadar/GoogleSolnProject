@@ -9,7 +9,7 @@ exports.verifyToken = async (req, res, next) => {
     }
     token = token.split(" ")[1];
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = await User.findById(decoded.userId).select("-password -otp -otpExpiry");
+    req.user = await User.findById(decoded.userId).select("-password");
     next();
   } catch (err) {
     res.status(401).json({ error: "Invalid token" });

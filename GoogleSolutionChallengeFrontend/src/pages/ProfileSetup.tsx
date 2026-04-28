@@ -1,6 +1,6 @@
 /**
  * ProfileSetup.tsx
- * POST /api/profile/setup → sets profileCompleted = true → redirect to #dashboard
+ * POST /api/profile/setup → sets isProfileComplete = true → redirect to #dashboard
  * UI: Split two-column layout matching Login/Signup to fix vertical scroll issues.
  */
 import { useState, useEffect } from "react";
@@ -64,7 +64,7 @@ export default function ProfileSetupPage() {
 
       setUser({
         email: profile.email,
-        isVerified: profile.isVerified,
+        isProfileComplete: true,
         profileCompleted: true,
       });
 

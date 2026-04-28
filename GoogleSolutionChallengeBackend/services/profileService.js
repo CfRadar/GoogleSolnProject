@@ -1,13 +1,13 @@
 const User = require("../models/User");
 
 async function getProfile(userId) {
-  const user = await User.findById(userId).select("-password -otp -otpExpiry");
+  const user = await User.findById(userId).select("-password");
   if (!user) throw new Error("User not found");
   return user;
 }
 
 /**
- * First-time profile setup — marks profileCompleted = true
+ * First-time profile setup — marks isProfileComplete = true
  */
 async function setupProfile(userId, profileData) {
   const user = await User.findById(userId);
@@ -20,22 +20,21 @@ async function setupProfile(userId, profileData) {
     user.location = { address: profileData.location.address };
   }
 
+  user.isProfileComplete = true;
   user.profileCompleted = true;
 
   await user.save();
 
   const result = user.toObject();
   delete result.password;
-  delete result.otp;
-  delete result.otpExpiry;
   return result;
 }
 
 /**
- * General profile update (no profileCompleted side-effect)
+ * General profile update (no profile completion side-effect)
  */
 async function updateProfile(userId, profileData) {
-  const user = await User.findById(userId).select("-password -otp -otpExpiry");
+  const user = await User.findById(userId).select("-password");
   if (!user) throw new Error("User not found");
 
   if (profileData.skills !== undefined) user.skills = profileData.skills;

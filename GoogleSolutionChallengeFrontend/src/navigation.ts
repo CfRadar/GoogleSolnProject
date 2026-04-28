@@ -25,13 +25,13 @@ export function requireAuth(): boolean {
 // ── Post-auth routing decision ─────────────────────────────────────────────
 
 /**
- * redirectAfterAuth(profileCompleted)
- * Called after login / OTP verify to decide the next page:
+ * redirectAfterAuth(isProfileComplete)
+ * Called after login or signup to decide the next page:
  *   false → #profile-setup
  *   true  → #dashboard
  */
-export function redirectAfterAuth(profileCompleted: boolean): void {
-  if (!profileCompleted) {
+export function redirectAfterAuth(isProfileComplete: boolean): void {
+  if (!isProfileComplete) {
     navigate("profile-setup");
   } else {
     navigate("dashboard");

@@ -14,8 +14,8 @@ export const API_BASE: string =
 
 export interface StoredUser {
   email: string;
-  isVerified?: boolean;
-  profileCompleted: boolean;
+  isProfileComplete: boolean;
+  profileCompleted?: boolean;
 }
 
 export function getToken(): string | null {

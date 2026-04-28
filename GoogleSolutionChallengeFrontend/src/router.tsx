@@ -5,7 +5,6 @@
  * Routes:
  *   #login         → <LoginPage>
  *   #signup        → <SignupPage>
- *   #verify        → <VerifyPage>
  *   #profile-setup → <ProfileSetupPage>
  *   #dashboard     → <DashboardPage>  (protected)
  *   (default)      → <LoginPage>
@@ -21,7 +20,6 @@ import { redirectAfterAuth } from "./navigation";
 
 import LoginPage from "./pages/Login";
 import SignupPage from "./pages/Signup";
-import VerifyPage from "./pages/Verify";
 import ProfileSetupPage from "./pages/ProfileSetup";
 import DashboardPage from "./pages/Dashboard";
 import TasksPage from "./pages/Tasks";
@@ -36,7 +34,6 @@ import ProfileEditPage from "./pages/ProfileEdit";
 const ROUTES: Record<string, ComponentType> = {
   login: LoginPage,
   signup: SignupPage,
-  verify: VerifyPage,
   "profile-setup": ProfileSetupPage,
   dashboard: DashboardPage,
   tasks: TasksPage,
@@ -69,7 +66,7 @@ export default function Router() {
     const token = getToken();
     const user = getUser();
     if (token && (route === "login" || route === "signup")) {
-      redirectAfterAuth(user?.profileCompleted ?? true);
+      redirectAfterAuth(user?.isProfileComplete ?? user?.profileCompleted ?? true);
     }
   }, [route]);
 
